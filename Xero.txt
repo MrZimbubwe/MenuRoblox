@@ -1,0 +1,116 @@
+local ScreenGui = Instance.new("ScreenGui")
+local MainMidnight = Instance.new("Midnight")
+local TitleLabel = Instance.new("TextLabel")
+local ToggleButton = Instance.new("TextButton")
+local FunctionButtonsMidnight = Instance.new("ScrollingMidnight")
+
+local UICorner_Main = Instance.new("UICorner")
+local UICorner_Button = Instance.new("UICorner")
+local UICorner_Toggle = Instance.new("UICorner")
+
+ScreenGui.Name = "Xero HubUI"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+-- Main Midnight
+MainMidnight.Name = "MainMidnight"
+MainMidnight.Parent = ScreenGui
+MainMidnight.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MainMidnight.BackgroundTransparency = 0.2
+MainMidnight.Size = UDim2.new(0, 320, 0, 420)
+MainMidnight.Position = UDim2.new(0.5, -160, 0.5, -210)
+MainMidnight.Visible = true
+MainMidnight.BorderSizePixel = 0
+MainMidnight.Draggable = true
+MainMidnight.Active = true
+
+UICorner_Main.Parent = MainMidnight
+UICorner_Main.CornerRadius = UDim.new(0, 10) -- โค้งเล็กน้อย
+
+-- Title
+TitleLabel.Name = "TitleLabel"
+TitleLabel.Parent = MainMidnight
+TitleLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TitleLabel.BackgroundTransparency = 0.2
+TitleLabel.Size = UDim2.new(1, 0, 0, 40)
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.Text = "Xero Hub"
+TitleLabel.TextSize = 20
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Function Buttons Midnight
+FunctionButtonsMidnight.Name = "FunctionButtonsMidnight"
+FunctionButtonsMidnight.Parent = MainMidnight
+FunctionButtonsMidnight.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+FunctionButtonsMidnight.BackgroundTransparency = 0.2
+FunctionButtonsMidnight.Size = UDim2.new(1, -20, 1, -60)
+FunctionButtonsMidnight.Position = UDim2.new(0, 10, 0, 50)
+FunctionButtonsMidnight.ScrollBarThickness = 5
+
+-- Toggle Button
+ToggleButton.Name = "ToggleButton"
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+ToggleButton.BackgroundTransparency = 0.1
+ToggleButton.Size = UDim2.new(0, 50, 0, 50)
+ToggleButton.Position = UDim2.new(0, 10, 0, 10)
+ToggleButton.Font = Enum.Font.GothamBold
+ToggleButton.Text = "W"
+ToggleButton.TextSize = 20
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+UICorner_Toggle.Parent = ToggleButton
+UICorner_Toggle.CornerRadius = UDim.new(1, 0) -- ทำให้เป็นปุ่มกลม
+
+-- Function Buttons
+local functionScripts = {
+    ["[+] บิน V1"] = "https://pastebin.com/raw/2PxQwWxV",
+    ["[+] ล็อคหัว"] = "https://gist.githubusercontent.com/Aimboter477387/582af6aec49782899d5d375ab239039e/raw/51b6ddf5dc74731a24f912134061f150b6f6b316/gistfile1.txt",
+    ["[+] Fling "] = "https://pastebin.com/raw/pMFnTQ31",
+    ["[+] ทำให้เล่นลื่นขึ้น (บูส FPS)"] = "https://raw.githubusercontent.com/XNEOFF/FPS-BOOSTER/main/FPSBooster.txt",
+    ["[+] วิ่งเร็ว 4 เท่า"] = "https://pastebin.com/raw/pZhkm5mD",
+    ["[+] เสกของ"] = "https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gametoolgiver.lua",
+    ["[+] DEX ถอดไฟล์เซิฟเวอร์"] = "https://rawscripts.net/raw/Universal-Script-Keyless-mobile-dex-17888",
+    ["[+] HitBox"] = "https://pastebin.com/raw/TdkQXyJr",
+    ["[+] มองทะลุ EPS"] = "https://pastebin.com/raw/ZkLhNuDL",
+    ["[+] หายตัว"] = "https://pastebin.com/raw/3Rnd9rHf",
+    ["[+] F3X"] = "rbxassetid://6695644299",
+    ["[+] infinity yield"] = "https://pastebin.com/raw/3P1z104N",
+    ["[+] Fling All"] = "https://pastebin.com/raw/zqyDSUWX",
+    ["[+] RC7 "] = "https://raw.githubusercontent.com/CoreGui/Scripts/main/RC7",
+}
+
+local yOffset = 10
+local totalHeight = 0
+for name, url in pairs(functionScripts) do
+    local button = Instance.new("TextButton")
+    local corner = Instance.new("UICorner")
+
+    button.Name = name
+    button.Parent = FunctionButtonsMidnight
+    button.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+    button.BackgroundTransparency = 0.1
+    button.Size = UDim2.new(1, -20, 0, 30)
+    button.Position = UDim2.new(0, 10, 0, yOffset)
+    button.Font = Enum.Font.Gotham
+    button.TextSize = 14
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Text = name
+
+    corner.Parent = button
+    corner.CornerRadius = UDim.new(0, 8) -- ปุ่มโค้งมน
+
+    button.MouseButton1Click:Connect(function()
+        loadstring(game:HttpGet(url, true))()
+    end)
+
+    yOffset = yOffset + 40
+    totalHeight = totalHeight + 40
+end
+
+FunctionButtonsMidnight.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
+
+-- Toggle UI
+ToggleButton.MouseButton1Click:Connect(function()
+    MainMidnight.Visible = not MainMidnight.Visible
+end)
