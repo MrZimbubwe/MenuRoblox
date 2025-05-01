@@ -81,12 +81,12 @@ local functionCategories = {
         ["🔍 ESP Players"] = "https://pastebin.com/raw/ZkLhNuDL",
         ["🤖 ESP BOT,NPC"] = "https://pastebin.com/raw/q26QuUBF"
     },
-    ["เครื่องมือ🛠️"]
+    ["เครื่องมือ🛠️"] = {
         ["infinite👺"] = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source",
         ["GhostHub"] = "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub",
         ["Admins Nameless"] = "https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"
     },
-    ["แมพต่างๆ🤠"]
+    ["แมพต่างๆ🤠"] = {
         ["BlueLock⚽"] = "https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL",
         ["Ninja Legend🥷"] = "https://raw.githubusercontent.com/rndmq/Serverlist/refs/heads/main/Loader",
         ["AutoBond💸"] = "https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond",
