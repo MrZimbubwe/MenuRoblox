@@ -67,8 +67,8 @@ local functionCategories = {
         ["💪🏻 อมตะ"] = "https://pastebin.com/raw/EjrTrMwC",
         ["👾 คีย์บอร์ด"] = "https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt",
         ["👻 หายตัว"] = "https://pastebin.com/raw/3Rnd9rHf"
-        ["VFLY🏎️🪽"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Vehicle%20Fly%20Gui'))()"
-        ["ยิงรัว"] = "loadstring(game:HttpGet("https://pastebin.com/raw/g09bKkCK"))()"
+        ["VFLY🏎️🪽"] "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Vehicle%20Fly%20Gui",
+        ["ยิงรัว"] = "https://pastebin.com/raw/g09bKkCK"
     },
     ["😈 ปั่นประสาทผู้เล่น"] = {
         ["🌌 หลุมดำ"] = "https://pastebin.com/raw/pkZnU5P5",
@@ -82,19 +82,19 @@ local functionCategories = {
         ["🤖 ESP BOT,NPC"] = "https://pastebin.com/raw/q26QuUBF"
     },
     ["เครื่องมือ🛠️"]
-        ["infinite👺"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()"
-        ["GhostHub"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub"))()
-        ["Admins Nameless"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))()"
+        ["infinite👺"] = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source",
+        ["GhostHub"] = "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub",
+        ["Admins Nameless"] = "https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"
     },
     ["แมพต่างๆ🤠"]
-        ["BlueLock⚽"] = "loadstring(game:("https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL"))()"
-        ["Ninja Legend🥷"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/rndmq/Serverlist/refs/heads/main/Loader"))()"
-        ["AutoBond💸"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond"))()"
-        ["Dead Rail TP🚂"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/ringtaa/deadrailsui.github.io/refs/heads/main/RINGTA.LUA"))()"
-        ["Strongest Punch👊"] = "loadstring(game:HttpGet("https://rawscripts.net/raw/STRONGEST-PUNCH-SIMULATOR-Automatic-farm-4508"))()"
-        ["Evade🏃"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua'))()"
-        ["Brookhaven🏠"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script'))()"
-        ["Brookhaven Music🏡"] = "loadstring(game:HttpGet("https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-33531"))()"
+        ["BlueLock⚽"] = "https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL",
+        ["Ninja Legend🥷"] = "https://raw.githubusercontent.com/rndmq/Serverlist/refs/heads/main/Loader",
+        ["AutoBond💸"] = "https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond",
+        ["Dead Rail TP🚂"] = "https://raw.githubusercontent.com/ringtaa/deadrailsui.github.io/refs/heads/main/RINGTA.LUA",
+        ["Strongest Punch👊"] = "https://rawscripts.net/raw/STRONGEST-PUNCH-SIMULATOR-Automatic-farm-4508",
+        ["Evade🏃"] = "https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua",
+    ,    ["Brookhaven🏠"] = "https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script",
+        ["Brookhaven Music🏡"] = "https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-33531"
     }
 }
 local yOffset = 0
