@@ -96,7 +96,7 @@ local functionCategories = {
         ["Brookhaven🏠"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script'))()"
         ["Brookhaven Music🏡"] = "loadstring(game:HttpGet("https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-33531"))()"
     }
-
+}
 local yOffset = 0
 for category, scripts in pairs(functionCategories) do
     local categoryLabel = Instance.new("TextLabel")
