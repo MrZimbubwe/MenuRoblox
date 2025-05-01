@@ -1,9 +1,9 @@
-local Xero = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
-local Window = Xero:CreateWindow({
-    Title = "Xero Hub " .. Fluent.Version,
+local Window = Fluent:CreateWindow({
+    Title = "XeroHub " .. Fluent.Version,
     SubTitle = "by กูเอง",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
@@ -14,40 +14,323 @@ local Window = Xero:CreateWindow({
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
-    Main = Window:AddTab({ Title = "หน้าหลัก", Icon = "" }),
-    
-    Settings = Window:AddTab({ Title = "ตั้งค่า", Icon = "settings" })
+    Main = Window:AddTab({ Title = "Main", Icon = "" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
-local Options = Xero.Options
+local Options = Fluent.Options
 
 do
-    Xero:Notify({
-        Title = "แจ้งเตือน",
-        Content = "คุณได้รันสคริปแล้ว",
-        SubContent = "ใช้ให้สนุก", -- Optional
+    Fluent:Notify({
+        Title = "Notification",
+        Content = "This is a notification",
+        SubContent = "SubContent", -- Optional
         Duration = 5 -- Set to nil to make the notification not disappear
     })
 
 
 
     Tabs.Main:AddParagraph({
-        Title = "สวัสดี😁",
-        Content = "กูชอบหี👻🎩"
+        Title = "สวัสดี🤠",
+        Content = "กูชอบหี👻🌚"
     })
 
 
 
     Tabs.Main:AddButton({
         Title = "บิน✈️",
-        Description = "กดเพื่อรันสคริปบิน",
+        Description = "กดเพื่อบิน",
         Callback = function()
-            https://pastebin.com/raw/DV8LWq57
+            https://pastebin.com/raw/qWT8nP8b
+            
         end
-})
+    })
 
 
 
+    Tabs.Main:AddButton({
+        Title = "กดวาป🔥️",
+        Description = "กดเพื่อรับกดไอเทมวาป",
+        Callback = function()
+            https://pastebin.com/raw/HK7kTmDL
+            
+        end
+    })
+    
+    
+    
+    Tabs.Main:AddButton({
+        Title = "ทะล🥷ุ️",
+        Description = "ทะลุ",
+        Callback = function()
+            https://pastebin.com/raw/SqNBCt6C
+            
+        end
+    })
+    
+    
+    
+    Tabs.Main:AddButton({
+        Title = "วิ่งเร็ว×4🏃️",
+        Description = "วิ่งเร็วกว่าเดิม",
+        Callback = function()
+            https://pastebin.com/raw/pZhkm5mD
+            
+        end
+    })
+    
+    
+    
+    Tabs.Main:AddButton({
+        Title = "ฆ่าบอท⚔️️",
+        Description = "คิลบอท",
+        Callback = function()
+            https://pastebin.com/raw/DczvQZyU
+            
+        end
+    })    
+    
+    
+    
+    Tabs.Main:AddButton({
+        Title = "ล็อคหัว🎯️️",
+        Description = "อิทบอท",
+        Callback = function()
+            https://gist.githubusercontent.com/Aimboter477387/582af6aec49782899d5d375ab239039e/raw
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "เสกของ🎁️️",
+        Description = "กดเพื่อเสก",
+        Callback = function()
+            https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gametoolgiver.lua
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "บูสfps🔥️️",
+        Description = "แรง",
+        Callback = function()
+            https://raw.githubusercontent.com/XNEOFF/FPS-BOOSTER/main/FPSBooster.txt
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Hitbox 32%🎯️️",
+        Description = "Hithox",
+        Callback = function()
+            https://pastebin.com/raw/iRyTtfmf
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "GOD️️",
+        Description = "อมตะ",
+        Callback = function()
+            https://pastebin.com/raw/EjrTrMwC
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Keyboard⌨️️️",
+        Description = "คีย์บอด",
+        Callback = function()
+            https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "หายตัว🫥️️",
+        Description = "อมตะ",
+        Callback = function()
+            https://pastebin.com/raw/3Rnd9rHf
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "infinite Yeid👺️️",
+        Description = "Admins",
+        Callback = function()
+            https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Ghost Hub👻️️",
+        Description = "Ghost",
+        Callback = function()
+            https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Admins Nameless🎩️️",
+        Description = "admins2",
+        Callback = function()
+            https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "ชักเว่า🪁️️",
+        Description = "หำ",
+        Callback = function()
+            https://pastefy.app/wa3v2Vgm/raw
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Fling🪽️️",
+        Description = "เตะ",
+        Callback = function()
+            https://pastebin.com/raw/TXMNj1yy
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "ESP PLAYER👥️️",
+        Description = "ESP",
+        Callback = function()
+            https://pastebin.com/raw/ZkLhNuDL
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "ESP BOT,NPC👾🤖️️",
+        Description = "",
+        Callback = function()
+            https://pastebin.com/raw/q26QuUBF
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "BlueLock⚽️️",
+        Description = "Map",
+        Callback = function()
+            https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Ninja Legend🥷️️",
+        Description = "Map",
+        Callback = function()
+            https://raw.githubusercontent.com/rndmq/Serverlist/refs/heads/main/Loader
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "AutoBond💸️️",
+        Description = "DearRail🚄",
+        Callback = function()
+            https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Dead Rail🚆️️",
+        Description = "Map",
+        Callback = function()
+            https://raw.githubusercontent.com/ringtaa/deadrailsui.github.io/refs/heads/main/RINGTA.LUA
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "STRONGEST PUNCH👊️️",
+        Description = "Map",
+        Callback = function()
+            https://rawscripts.net/raw/STRONGEST-PUNCH-SIMULATOR-Automatic-farm-4508
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Evade🏃️️",
+        Description = "Map",
+        Callback = function()
+            https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Brookhaven🏘️️️",
+        Description = "Map",
+        Callback = function()
+            https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script
+            
+        end
+    })
+        
+    
+    
+    Tabs.Main:AddButton({
+        Title = "Brookhaven Music🏡🎶️️",
+        Description = "https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-33531",
+        Callback = function()
+            
+            
+        end
+    })
     local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
 
     Toggle:OnChanged(function()
