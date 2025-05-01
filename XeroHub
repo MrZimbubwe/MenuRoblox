@@ -66,7 +66,7 @@ local functionCategories = {
         ["🎩 Hitbox 32%"] = "https://pastebin.com/raw/iRyTtfmf",
         ["💪🏻 อมตะ"] = "https://pastebin.com/raw/EjrTrMwC",
         ["👾 คีย์บอร์ด"] = "https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt",
-        ["👻 หายตัว"] = "https://pastebin.com/raw/3Rnd9rHf"
+        ["👻 หายตัว"] = "https://pastebin.com/raw/3Rnd9rHf",
         ["VFLY🏎️🪽"] "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Vehicle%20Fly%20Gui",
         ["ยิงรัว"] = "https://pastebin.com/raw/g09bKkCK"
     },
