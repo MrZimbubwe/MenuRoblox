@@ -93,7 +93,7 @@ local functionCategories = {
         ["Dead Rail TP🚂"] = "https://raw.githubusercontent.com/ringtaa/deadrailsui.github.io/refs/heads/main/RINGTA.LUA",
         ["Strongest Punch👊"] = "https://rawscripts.net/raw/STRONGEST-PUNCH-SIMULATOR-Automatic-farm-4508",
         ["Evade🏃"] = "https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua",
-    ,    ["Brookhaven🏠"] = "https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script",
+        ["Brookhaven🏠"] = "https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script",
         ["Brookhaven Music🏡"] = "https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-33531"
     }
 }
