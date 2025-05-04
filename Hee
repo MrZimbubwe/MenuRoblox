@@ -1,422 +1,960 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
-local Window = Fluent:CreateWindow({
-    Title = "XeroHub " .. Fluent.Version,
-    SubTitle = "by กูเอง",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+_Hawk = "ohhahtuhthttouttpwuttuaunbotwo"
+local Hawk = loadstring(game:HttpGet("https://raw.githubusercontent.com/TheHanki/HawkHUB/main/LibSources/HawkLib.lua", true))()
+local Window = Hawk:Window({
+	ScriptName = "XeroHub",
+	DestroyIfExists = true, --if false, gui wont disappear
+	Theme = "Dark" --Themes: Pink, White, Dark
 })
+Window:Close({
+	visibility = true, --if false, close button will disappear
+	Callback = function()
+		Window:Destroy() --Destroying Gui Function
+	end,
+})
+Window:Minimize({
+	visibility = true, --if false, close button will disappear
+	OpenButton = true, -- Visible = false etc, open button.
+	Callback = function()
+	end,
+})
+local tab1 = Window:Tab("หน้าหลัก") 
+-- Window:Tab("Tab","Tab Title")
+local newsec = tab1:Section("เมนู")
+newsec:UpdateSection("เครดิต") --Updates Section Name
+local label = newsec:Label("รวมสคริปเกรียนๆ","Xero Hub Only ⚡(โฟกัส)") 
+--newsec:Label("by โฟกัส")
+local button = newsec:Button("Kuybord⌨️","กดเพื่อใช้คีย์บอร๋ด",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt"))()
+end)
+local tab1 = Window:Tab("สคริป") 
+-- Window:Tab("Tab","เกรียนคน"
+local newsec = tab1:Section("สคริปทั่วไป")
+local button = newsec:Button("ทะลุกำแพง⚡","กดเพื่อใช้สคริป",function()
+	local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
---Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
-local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-}
+local textButton = Instance.new("TextButton")
+textButton.Parent = screenGui
+textButton.Position = UDim2.new(0.8, 0, 0.1, 0)
+textButton.Size = UDim2.new(0, 150, 0, 50)
+textButton.Text = "ทะลุกำแพง: ปิด"
+textButton.BackgroundColor3 = Color3.fromRGB(153, 51, 255)
+textButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+textButton.Font = Enum.Font.GothamBold
+textButton.TextSize = 16
+textButton.AutoButtonColor = false
+textButton.BorderSizePixel = 2
+textButton.BorderColor3 = Color3.fromRGB(200, 200, 200)
+textButton.Active = true
+textButton.Draggable = true -- ✅ ทำให้ลาก UI ได้
 
-local Options = Fluent.Options
+-- เสียงตอนกดปุ่ม
+local clickSound = Instance.new("Sound", textButton)
+clickSound.SoundId = "rbxassetid://9117665351"
+clickSound.Volume = 1
 
-do
-    Fluent:Notify({
-        Title = "Notification",
-        Content = "This is a notification",
-        SubContent = "SubContent", -- Optional
-        Duration = 5 -- Set to nil to make the notification not disappear
-    })
+-- เอฟเฟกต์ตอนโฮเวอร์
+textButton.MouseEnter:Connect(function()
+    textButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+end)
 
+textButton.MouseLeave:Connect(function()
+    textButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+end)
 
+textButton.MouseButton1Down:Connect(function()
+    textButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+end)
 
-    Tabs.Main:AddParagraph({
-        Title = "สวัสดี🤠",
-        Content = "กูชอบหี👻🌚"
-    })
+textButton.MouseButton1Up:Connect(function()
+    textButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+end)
 
+-- ตัวแปรสำหรับสถานะการทะลุ
+local canCollide = true
 
+-- ฟังก์ชันสำหรับเปิด/ปิดการทะลุ
+textButton.MouseButton1Click:Connect(function()
+    canCollide = not canCollide
+    clickSound:Play()  
 
-    Tabs.Main:AddButton({
-        Title = "บิน✈️",
-        Description = "กดเพื่อบิน",
-        Callback = function()
-            https://pastebin.com/raw/qWT8nP8b    
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "กดวาป🔥️",
-        Description = "กดเพื่อรับกดไอเทมวาป",
-        Callback = function()
-            https://pastebin.com/raw/HK7kTmDL   
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "ทะล🥷ุ️",
-        Description = "ทะลุ",
-        Callback = function()
-            https://pastebin.com/raw/SqNBCt6C  
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "วิ่งเร็ว×4🏃️",
-        Description = "วิ่งเร็วกว่าเดิม",
-        Callback = function()
-            https://pastebin.com/raw/pZhkm5mD   
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "ฆ่าบอท⚔️️",
-        Description = "คิลบอท",
-        Callback = function()
-            https://pastebin.com/raw/DczvQZyU  
-        end
-    })    
-    Tabs.Main:AddButton({
-        Title = "ล็อคหัว🎯️️",
-        Description = "อิทบอท",
-        Callback = function()
-            https://gist.githubusercontent.com/Aimboter477387/582af6aec49782899d5d375ab239039e/raw   
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "เสกของ🎁️️",
-        Description = "กดเพื่อเสก",
-        Callback = function()
-            https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gametoolgiver.lua   
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "บูสfps🔥️️",
-        Description = "แรง",
-        Callback = function()
-            https://raw.githubusercontent.com/XNEOFF/FPS-BOOSTER/main/FPSBooster.txt      
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Hitbox 32%🎯️️",
-        Description = "Hithox",
-        Callback = function()
-            https://pastebin.com/raw/iRyTtfm
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "GOD️️",
-        Description = "อมตะ",
-        Callback = function()
-            https://pastebin.com/raw/EjrTrMwC   
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Keyboard⌨️️️",
-        Description = "คีย์บอด",
-        Callback = function()
-            https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt  
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "หายตัว🫥️️",
-        Description = "อมตะ",
-        Callback = function()
-            https://pastebin.com/raw/3Rnd9rHf  
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "infinite Yeid👺️️",
-        Description = "Admins",
-        Callback = function()
-            https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source  
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Ghost Hub👻️️",
-        Description = "Ghost",
-        Callback = function()
-            https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub  
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Admins Nameless🎩️️",
-        Description = "admins2",
-        Callback = function()
-            https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "ชักเว่า🪁️️",
-        Description = "หำ",
-        Callback = function()
-            https://pastefy.app/wa3v2Vgm/raw 
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Fling🪽️️",
-        Description = "เตะ",
-        Callback = function()
-            https://pastebin.com/raw/TXMNj1yy 
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "ESP PLAYER👥️️",
-        Description = "ESP",
-        Callback = function()
-            https://pastebin.com/raw/ZkLhNuDL   
-        end
-    })  
-    Tabs.Main:AddButton({
-        Title = "ESP BOT,NPC👾🤖️️",
-        Description = "",
-        Callback = function()
-            https://pastebin.com/raw/q26QuUBF   
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "BlueLock⚽️️",
-        Description = "Map",
-        Callback = function()
-            https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL  
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Ninja Legend🥷️️",
-        Description = "Map",
-        Callback = function()
-            https://raw.githubusercontent.com/rndmq/Serverlist/refs/heads/main/Loader
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "AutoBond💸️️",
-        Description = "DearRail🚄",
-        Callback = function()
-            https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond 
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Dead Rail🚆️️",
-        Description = "Map",
-        Callback = function()
-            https://raw.githubusercontent.com/ringtaa/deadrailsui.github.io/refs/heads/main/RINGTA.LUA
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "STRONGEST PUNCH👊️️",
-        Description = "Map",
-        Callback = function()
-            https://rawscripts.net/raw/STRONGEST-PUNCH-SIMULATOR-Automatic-farm-4508
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Evade🏃️️",
-        Description = "Map",
-        Callback = function()
-            https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua 
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Brookhaven🏘️️️",
-        Description = "Map",
-        Callback = function()
-            https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script
-        end
-    })
-    Tabs.Main:AddButton({
-        Title = "Brookhaven Music🏡🎶️️",
-        Description = "เปิดเพลงเรื้อนๆ",
-        Callback = function()
-            https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-3353
-        end
-    })
-    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
+    if canCollide then
+        textButton.Text = "ทะลุกำแพง: ปิด"
+        textButton.BorderColor3 = Color3.fromRGB(200, 200, 200)
+    else
+        textButton.Text = "ทะลุกำแพง: เปิด"
+        textButton.BorderColor3 = Color3.fromRGB(0, 255, 0)
+    end
+end)
 
-    Toggle:OnChanged(function()
-        print("Toggle changed:", Options.MyToggle.Value)
-    end)
-
-    Options.MyToggle:SetValue(false)
-
-
-    
-    local Slider = Tabs.Main:AddSlider("Slider", {
-        Title = "Slider",
-        Description = "This is a slider",
-        Default = 2,
-        Min = 0,
-        Max = 5,
-        Rounding = 1,
-        Callback = function(Value)
-            print("Slider was changed:", Value)
-        end
-    })
-
-    Slider:OnChanged(function(Value)
-        print("Slider changed:", Value)
-    end)
-
-    Slider:SetValue(3)
-
-
-
-    local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
-        Title = "Dropdown",
-        Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
-        Multi = false,
-        Default = 1,
-    })
-
-    Dropdown:SetValue("four")
-
-    Dropdown:OnChanged(function(Value)
-        print("Dropdown changed:", Value)
-    end)
-
-
-    
-    local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
-        Title = "Dropdown",
-        Description = "You can select multiple values.",
-        Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
-        Multi = true,
-        Default = {"seven", "twelve"},
-    })
-
-    MultiDropdown:SetValue({
-        three = true,
-        five = true,
-        seven = false
-    })
-
-    MultiDropdown:OnChanged(function(Value)
-        local Values = {}
-        for Value, State in next, Value do
-            table.insert(Values, Value)
-        end
-        print("Mutlidropdown changed:", table.concat(Values, ", "))
-    end)
-
-
-
-    local Colorpicker = Tabs.Main:AddColorpicker("Colorpicker", {
-        Title = "Colorpicker",
-        Default = Color3.fromRGB(96, 205, 255)
-    })
-
-    Colorpicker:OnChanged(function()
-        print("Colorpicker changed:", Colorpicker.Value)
-    end)
-    
-    Colorpicker:SetValueRGB(Color3.fromRGB(0, 255, 140))
-
-
-
-    local TColorpicker = Tabs.Main:AddColorpicker("TransparencyColorpicker", {
-        Title = "Colorpicker",
-        Description = "but you can change the transparency.",
-        Transparency = 0,
-        Default = Color3.fromRGB(96, 205, 255)
-    })
-
-    TColorpicker:OnChanged(function()
-        print(
-            "TColorpicker changed:", TColorpicker.Value,
-            "Transparency:", TColorpicker.Transparency
-        )
-    end)
-
-
-
-    local Keybind = Tabs.Main:AddKeybind("Keybind", {
-        Title = "KeyBind",
-        Mode = "Toggle", -- Always, Toggle, Hold
-        Default = "LeftControl", -- String as the name of the keybind (MB1, MB2 for mouse buttons)
-
-        -- Occurs when the keybind is clicked, Value is `true`/`false`
-        Callback = function(Value)
-            print("Keybind clicked!", Value)
-        end,
-
-        -- Occurs when the keybind itself is changed, `New` is a KeyCode Enum OR a UserInputType Enum
-        ChangedCallback = function(New)
-            print("Keybind changed!", New)
-        end
-    })
-
-    -- OnClick is only fired when you press the keybind and the mode is Toggle
-    -- Otherwise, you will have to use Keybind:GetState()
-    Keybind:OnClick(function()
-        print("Keybind clicked:", Keybind:GetState())
-    end)
-
-    Keybind:OnChanged(function()
-        print("Keybind changed:", Keybind.Value)
-    end)
-
-    task.spawn(function()
-        while true do
-            wait(1)
-
-            -- example for checking if a keybind is being pressed
-            local state = Keybind:GetState()
-            if state then
-                print("Keybind is being held down")
+-- ฟังก์ชันสำหรับเปิด/ปิดการชน
+game:GetService("RunService").Heartbeat:Connect(function()
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        for _, part in ipairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = canCollide
             end
-
-            if Fluent.Unloaded then break end
         end
-    end)
+    end
+end)
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("วิ่งเร็วกว่าเดิม×4🏃","กดเพื่อใช้สคริป",function()
+	local player = game.Players.LocalPlayer
 
-    Keybind:SetValue("MB2", "Toggle") -- Sets keybind to MB2, mode to Hold
+-- รับตัวละครของผู้เล่น
+local character = player.Character or player.CharacterAdded:Wait()
 
+-- รับ Humanoid ของตัวละคร
+local humanoid = character:WaitForChild("Humanoid")
 
-    local Input = Tabs.Main:AddInput("Input", {
-        Title = "Input",
-        Default = "Default",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Value)
-            print("Input changed:", Value)
-        end
-    })
+-- ตั้งค่าความเร็วให้วิ่งเร็วขึ้นเป็น 4 เท่า
+humanoid.WalkSpeed = humanoid.WalkSpeed * 4
+end)
+--newsec:Button("เสกของ",function() end)
+local button = newsec:Button("เสกของ🎩","กดเพื่อเสกของ",function()
+	-- Original Code by https://scriptblox.com/script/Universal-Script-workspace-tool-giver-ui-12089
+-- Edited by dsgdfs/Sky
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local TextButton = Instance.new("TextButton")
+local TextLabel = Instance.new("TextLabel")
+local TextButton_2 = Instance.new("TextButton")
 
-    Input:OnChanged(function()
-        print("Input updated:", Input.Value)
-    end)
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
+
+Frame.Parent = ScreenGui
+Frame.Active = true
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.Position = UDim2.new(0.0610425249, 0, 0.0939490423, 0)
+Frame.Size = UDim2.new(0, 218, 0, 225)
+
+ScrollingFrame.Parent = Frame
+ScrollingFrame.Active = true
+ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ScrollingFrame.Position = UDim2.new(0.0871559605, 0, 0.155555561, 0)
+ScrollingFrame.Size = UDim2.new(0, 187, 0, 136)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 35, 0)
+
+UIListLayout.Parent = ScrollingFrame
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+TextButton.Parent = ScrollingFrame
+TextButton.BackgroundColor3 = Color3.fromRGB(117, 117, 117)
+TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.Size = UDim2.new(0, 155, 0, 39)
+TextButton.Visible = false
+TextButton.Font = Enum.Font.SourceSans
+TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.TextSize = 20.000
+TextButton.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.TextStrokeTransparency = 0.000
+TextButton.TextWrapped = true
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.Position = UDim2.new(-0.00129664713, 0, -0.000140406293, 0)
+TextLabel.Size = UDim2.new(0, 218, 0, 25)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "Tool Giver"
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextSize = 14.000
+
+TextButton_2.Parent = Frame
+TextButton_2.BackgroundColor3 = Color3.fromRGB(0, 255, 30)
+TextButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_2.Position = UDim2.new(0.0825688094, 0, 0.804444432, 0)
+TextButton_2.Size = UDim2.new(0, 180, 0, 30)
+TextButton_2.Font = Enum.Font.SourceSans
+TextButton_2.Text = "update list"
+TextButton_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_2.TextSize = 14.000
+
+local function FNDR_fake_script() -- Frame.LocalScript 
+	local script = Instance.new('LocalScript', Frame)
+
+	local button = script.Parent.ScrollingFrame.TextButton
+	button.Parent = nil
+	button.Name = "slaves"
+	local function updatelist()
+		for i, v in script.Parent.ScrollingFrame:GetDescendants() do
+			if v:IsA("TextButton") then
+				v:Destroy()
+			end
+		end
+	
+		local function cloneToBackpack(toolName)
+			local clonedTool = toolName:Clone()
+			clonedTool.Parent = game:GetService("Players").LocalPlayer:WaitForChild("Backpack")
+		end
+		for i, v in pairs(game:GetDescendants()) do
+			if v:IsA("Tool") and v.Parent.Parent ~= game:GetService("Players").LocalPlayer then
+				local clonebutton = button:Clone()
+				clonebutton.Parent = script.Parent.ScrollingFrame
+				clonebutton.Visible = true
+				clonebutton.Text = v.Name
+				clonebutton.MouseButton1Click:Connect(function()
+					cloneToBackpack(v)
+				end)
+			end
+		end
+	end
+	script.Parent.TextButton.MouseButton1Click:Connect(updatelist)
 end
+coroutine.wrap(FNDR_fake_script)()
+local function SGRWUDK_fake_script() -- Frame.DragScript 
+	local script = Instance.new('LocalScript', Frame)
+
+	local UIS = game:GetService('UserInputService')
+	local frame = script.Parent
+	local dragToggle = nil
+	local dragSpeed = 0
+	local dragStart = nil
+	local startPos = nil
+	
+	local function updateInput(input)
+		local delta = input.Position - dragStart
+		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {
+			Position = position
+		}):Play()
+	end
+	
+	frame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+			dragToggle = true
+			dragStart = input.Position
+			startPos = frame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
+	end)
+	
+	UIS.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			if dragToggle then
+				updateInput(input)
+			end
+		end
+	end)
+	
+end
+coroutine.wrap(SGRWUDK_fake_script)()
+end)
+local button = newsec:Button("บิน🐦","กดเพื่อบิน",function()
+	local main = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local up = Instance.new("TextButton")
+local down = Instance.new("TextButton")
+local onof = Instance.new("TextButton")
+local TextLabel = Instance.new("TextLabel")
+local plus = Instance.new("TextButton")
+local speed = Instance.new("TextLabel")
+local mine = Instance.new("TextButton")
+local closebutton = Instance.new("TextButton")
+local mini = Instance.new("TextButton")
+local mini2 = Instance.new("TextButton")
+
+main.Name = "main"
+main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+main.ResetOnSpawn = false
+
+Frame.Parent = main
+Frame.BackgroundColor3 = Color3.fromRGB(163, 255, 137)
+Frame.BorderColor3 = Color3.fromRGB(103, 221, 213)
+Frame.Position = UDim2.new(0.100320168, 0, 0.379746825, 0)
+Frame.Size = UDim2.new(0, 190, 0, 57)
+
+up.Name = "up"
+up.Parent = Frame
+up.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- แดง
+up.TextColor3 = Color3.fromRGB(255, 255, 255) -- สีขาว
+up.Size = UDim2.new(0, 44, 0, 28)
+up.Font = Enum.Font.SourceSans
+up.Text = "ขึ้น"
+down.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- สีดำ
+down.TextColor3 = Color3.fromRGB(255, 255, 255) -- สีขาว
+up.TextSize = 14.000
+
+down.Name = "down"
+down.Parent = Frame
+down.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+down.Position = UDim2.new(0, 0, 0.491228074, 0)
+down.Size = UDim2.new(0, 44, 0, 28)
+down.Font = Enum.Font.SourceSans
+down.Text = "ลง"
+down.TextColor3 = Color3.fromRGB(0, 0, 0)
+down.TextSize = 14.000
+
+onof.Name = "onof"
+onof.Parent = Frame
+onof.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
+onof.Position = UDim2.new(0.702823281, 0, 0.491228074, 0)
+onof.Size = UDim2.new(0, 56, 0, 28)
+onof.Font = Enum.Font.SourceSans
+onof.Text = "บิน"
+onof.TextColor3 = Color3.fromRGB(0, 0, 0)
+onof.TextSize = 14.000
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(242, 60, 255)
+TextLabel.Position = UDim2.new(0.469327301, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 100, 0, 28)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "FLY XeroHub🐦"
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000
+TextLabel.TextWrapped = true
+
+plus.Name = "plus"
+plus.Parent = Frame
+plus.BackgroundColor3 = Color3.fromRGB(133, 145, 255)
+plus.Position = UDim2.new(0.231578946, 0, 0, 0)
+plus.Size = UDim2.new(0, 45, 0, 28)
+plus.Font = Enum.Font.SourceSans
+plus.Text = "+"
+plus.TextColor3 = Color3.fromRGB(0, 0, 0)
+plus.TextScaled = true
+plus.TextSize = 14.000
+plus.TextWrapped = true
+
+speed.Name = "speed"
+speed.Parent = Frame
+speed.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
+speed.Position = UDim2.new(0.468421042, 0, 0.491228074, 0)
+speed.Size = UDim2.new(0, 44, 0, 28)
+speed.Font = Enum.Font.SourceSans
+speed.Text = "1"
+speed.TextColor3 = Color3.fromRGB(0, 0, 0)
+speed.TextScaled = true
+speed.TextSize = 14.000
+speed.TextWrapped = true
+
+mine.Name = "mine"
+mine.Parent = Frame
+mine.BackgroundColor3 = Color3.fromRGB(123, 255, 247)
+mine.Position = UDim2.new(0.231578946, 0, 0.491228074, 0)
+mine.Size = UDim2.new(0, 45, 0, 29)
+mine.Font = Enum.Font.SourceSans
+mine.Text = "-"
+mine.TextColor3 = Color3.fromRGB(0, 0, 0)
+mine.TextScaled = true
+mine.TextSize = 14.000
+mine.TextWrapped = true
+
+closebutton.Name = "Close"
+closebutton.Parent = main.Frame
+closebutton.BackgroundColor3 = Color3.fromRGB(225, 25, 0)
+closebutton.Font = "SourceSans"
+closebutton.Size = UDim2.new(0, 45, 0, 28)
+closebutton.Text = "X"
+closebutton.TextSize = 30
+closebutton.Position =  UDim2.new(0, 0, -1, 27)
+
+mini.Name = "minimize"
+mini.Parent = main.Frame
+mini.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
+mini.Font = "SourceSans"
+mini.Size = UDim2.new(0, 45, 0, 28)
+mini.Text = "-"
+mini.TextSize = 40
+mini.Position = UDim2.new(0, 44, -1, 27)
+
+mini2.Name = "minimize2"
+mini2.Parent = main.Frame
+mini2.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
+mini2.Font = "SourceSans"
+mini2.Size = UDim2.new(0, 45, 0, 28)
+mini2.Text = "+"
+mini2.TextSize = 40
+mini2.Position = UDim2.new(0, 44, -1, 57)
+mini2.Visible = false
+
+speeds = 1
+
+local speaker = game:GetService("Players").LocalPlayer
+
+local chr = game.Players.LocalPlayer.Character
+local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+
+nowe = false
+
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "FLY";
+	Text = "XeroHub";
+	Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"})
+Duration = 5;
+
+Frame.Active = true -- main = gui
+Frame.Draggable = true
+
+onof.MouseButton1Down:connect(function()
+
+	if nowe == true then
+		nowe = false
+
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
+		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+	else 
+		nowe = true
 
 
--- Addons:
--- SaveManager (Allows you to have a configuration system)
--- InterfaceManager (Allows you to have a interface managment system)
 
--- Hand the library over to our managers
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
+		for i = 1, speeds do
+			spawn(function()
 
--- Ignore keys that are used by ThemeManager.
--- (we dont want configs to save themes, do we?)
-SaveManager:IgnoreThemeSettings()
-
--- You can add indexes of elements the save manager should ignore
-SaveManager:SetIgnoreIndexes({})
-
--- use case for doing it this way:
--- a script hub could have themes in a global folder
--- and game configs in a separate folder per game
-InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/specific-game")
-
-InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-SaveManager:BuildConfigSection(Tabs.Settings)
+				local hb = game:GetService("RunService").Heartbeat	
 
 
-Window:SelectTab(1)
+				tpwalking = true
+				local chr = game.Players.LocalPlayer.Character
+				local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+				while tpwalking and hb:Wait() and chr and hum and hum.Parent do
+					if hum.MoveDirection.Magnitude > 0 then
+						chr:TranslateBy(hum.MoveDirection)
+					end
+				end
 
-Fluent:Notify({
-    Title = "Fluent",
-    Content = "The script has been loaded.",
-    Duration = 8
+			end)
+		end
+		game.Players.LocalPlayer.Character.Animate.Disabled = true
+		local Char = game.Players.LocalPlayer.Character
+		local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+		for i,v in next, Hum:GetPlayingAnimationTracks() do
+			v:AdjustSpeed(0)
+		end
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
+		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+	end
+
+
+
+
+	if game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
+
+
+
+		local plr = game.Players.LocalPlayer
+		local torso = plr.Character.Torso
+		local flying = true
+		local deb = true
+		local ctrl = {f = 0, b = 0, l = 0, r = 0}
+		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		local maxspeed = 50
+		local speed = 0
+
+
+		local bg = Instance.new("BodyGyro", torso)
+		bg.P = 9e4
+		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+		bg.cframe = torso.CFrame
+		local bv = Instance.new("BodyVelocity", torso)
+		bv.velocity = Vector3.new(0,0.1,0)
+		bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		if nowe == true then
+			plr.Character.Humanoid.PlatformStand = true
+		end
+		while nowe == true or game:GetService("Players").LocalPlayer.Character.Humanoid.Health == 0 do
+			game:GetService("RunService").RenderStepped:Wait()
+
+			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+				speed = speed+.5+(speed/maxspeed)
+				if speed > maxspeed then
+					speed = maxspeed
+				end
+			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+				speed = speed-1
+				if speed < 0 then
+					speed = 0
+				end
+			end
+			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+			else
+				bv.velocity = Vector3.new(0,0,0)
+			end
+			--	game.Players.LocalPlayer.Character.Animate.Disabled = true
+			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+		end
+		ctrl = {f = 0, b = 0, l = 0, r = 0}
+		lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		speed = 0
+		bg:Destroy()
+		bv:Destroy()
+		plr.Character.Humanoid.PlatformStand = false
+		game.Players.LocalPlayer.Character.Animate.Disabled = false
+		tpwalking = false
+
+
+
+
+	else
+		local plr = game.Players.LocalPlayer
+		local UpperTorso = plr.Character.UpperTorso
+		local flying = true
+		local deb = true
+		local ctrl = {f = 0, b = 0, l = 0, r = 0}
+		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		local maxspeed = 50
+		local speed = 0
+
+
+		local bg = Instance.new("BodyGyro", UpperTorso)
+		bg.P = 9e4
+		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+		bg.cframe = UpperTorso.CFrame
+		local bv = Instance.new("BodyVelocity", UpperTorso)
+		bv.velocity = Vector3.new(0,0.1,0)
+		bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		if nowe == true then
+			plr.Character.Humanoid.PlatformStand = true
+		end
+		while nowe == true or game:GetService("Players").LocalPlayer.Character.Humanoid.Health == 0 do
+			wait()
+
+			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+				speed = speed+.5+(speed/maxspeed)
+				if speed > maxspeed then
+					speed = maxspeed
+				end
+			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+				speed = speed-1
+				if speed < 0 then
+					speed = 0
+				end
+			end
+			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+			else
+				bv.velocity = Vector3.new(0,0,0)
+			end
+
+			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+		end
+		ctrl = {f = 0, b = 0, l = 0, r = 0}
+		lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		speed = 0
+		bg:Destroy()
+		bv:Destroy()
+		plr.Character.Humanoid.PlatformStand = false
+		game.Players.LocalPlayer.Character.Animate.Disabled = false
+		tpwalking = false
+
+
+
+	end
+
+
+
+
+
+end)
+
+local tis
+
+up.MouseButton1Down:connect(function()
+	tis = up.MouseEnter:connect(function()
+		while tis do
+			wait()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,1,0)
+		end
+	end)
+end)
+
+up.MouseLeave:connect(function()
+	if tis then
+		tis:Disconnect()
+		tis = nil
+	end
+end)
+
+local dis
+
+down.MouseButton1Down:connect(function()
+	dis = down.MouseEnter:connect(function()
+		while dis do
+			wait()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1,0)
+		end
+	end)
+end)
+
+down.MouseLeave:connect(function()
+	if dis then
+		dis:Disconnect()
+		dis = nil
+	end
+end)
+
+
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(char)
+	wait(0.7)
+	game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+	game.Players.LocalPlayer.Character.Animate.Disabled = false
+
+end)
+
+
+plus.MouseButton1Down:connect(function()
+	speeds = speeds + 1
+	speed.Text = speeds
+	if nowe == true then
+
+
+		tpwalking = false
+		for i = 1, speeds do
+			spawn(function()
+
+				local hb = game:GetService("RunService").Heartbeat	
+
+
+				tpwalking = true
+				local chr = game.Players.LocalPlayer.Character
+				local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+				while tpwalking and hb:Wait() and chr and hum and hum.Parent do
+					if hum.MoveDirection.Magnitude > 0 then
+						chr:TranslateBy(hum.MoveDirection)
+					end
+				end
+
+			end)
+		end
+	end
+end)
+mine.MouseButton1Down:connect(function()
+	if speeds == 1 then
+		speed.Text = 'cannot be less than 1'
+		wait(1)
+		speed.Text = speeds
+	else
+		speeds = speeds - 1
+		speed.Text = speeds
+		if nowe == true then
+			tpwalking = false
+			for i = 1, speeds do
+				spawn(function()
+
+					local hb = game:GetService("RunService").Heartbeat	
+
+
+					tpwalking = true
+					local chr = game.Players.LocalPlayer.Character
+					local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+					while tpwalking and hb:Wait() and chr and hum and hum.Parent do
+						if hum.MoveDirection.Magnitude > 0 then
+							chr:TranslateBy(hum.MoveDirection)
+						end
+					end
+
+				end)
+			end
+		end
+	end
+end)
+
+closebutton.MouseButton1Click:Connect(function()
+	main:Destroy()
+end)
+
+mini.MouseButton1Click:Connect(function()
+	up.Visible = false
+	down.Visible = false
+	onof.Visible = false
+	plus.Visible = false
+	speed.Visible = false
+	mine.Visible = false
+	mini.Visible = false
+	mini2.Visible = true
+	main.Frame.BackgroundTransparency = 1
+	closebutton.Position =  UDim2.new(0, 0, -1, 57)
+end)
+
+mini2.MouseButton1Click:Connect(function()
+	up.Visible = true
+	down.Visible = true
+	onof.Visible = true
+	plus.Visible = true
+	speed.Visible = true
+	mine.Visible = true
+	mini.Visible = true
+	mini2.Visible = false
+	main.Frame.BackgroundTransparency = 0 
+	closebutton.Position =  UDim2.new(0, 0, -1, 27)
+end)
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("Hitbox🎯🎁","กดเพื่อใช้สคริป",function()
+	local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Parent = screenGui
+mainFrame.Position = UDim2.new(0.7, 0, 0.1, 0)
+mainFrame.Size = UDim2.new(0, 200, 0, 150)
+mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+mainFrame.BorderSizePixel = 2
+mainFrame.BorderColor3 = Color3.fromRGB(200, 200, 200)
+mainFrame.Active = true
+mainFrame.Draggable = true -- ✅ ลาก UI ได้
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Parent = mainFrame
+titleLabel.Size = UDim2.new(1, 0, 0, 30)
+titleLabel.Text = "ปรับขนาด Hitbox"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.TextSize = 16
+titleLabel.BackgroundTransparency = 1
+
+local textBox = Instance.new("TextBox")
+textBox.Parent = mainFrame
+textBox.Position = UDim2.new(0.1, 0, 0.3, 0)
+textBox.Size = UDim2.new(0.8, 0, 0, 30)
+textBox.Text = "32"
+textBox.ClearTextOnFocus = false
+textBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+textBox.Font = Enum.Font.GothamBold
+textBox.TextSize = 16
+textBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+textBox.BorderSizePixel = 2
+textBox.BorderColor3 = Color3.fromRGB(200, 200, 200)
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Parent = mainFrame
+toggleButton.Position = UDim2.new(0.1, 0, 0.6, 0)
+toggleButton.Size = UDim2.new(0.8, 0, 0, 40)
+toggleButton.Text = "เปิด Hitbox"
+toggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Font = Enum.Font.GothamBold
+toggleButton.TextSize = 16
+toggleButton.BorderSizePixel = 2
+toggleButton.BorderColor3 = Color3.fromRGB(200, 200, 200)
+toggleButton.Active = true
+toggleButton.Draggable = false
+
+local clickSound = Instance.new("Sound", toggleButton)
+clickSound.SoundId = "rbxassetid://9117665351"
+clickSound.Volume = 1
+
+_G.HeadSize = tonumber(textBox.Text) or 32
+_G.Disabled = true
+
+textBox.FocusLost:Connect(function()
+    local newSize = tonumber(textBox.Text)
+    if newSize then
+        _G.HeadSize = newSize
+    else
+        textBox.Text = tostring(_G.HeadSize)
+    end
+end)
+
+toggleButton.MouseButton1Click:Connect(function()
+    _G.Disabled = not _G.Disabled
+    clickSound:Play()
+
+    if _G.Disabled then
+        toggleButton.Text = "เปิด Hitbox"
+        toggleButton.BorderColor3 = Color3.fromRGB(200, 200, 200)
+    else
+        toggleButton.Text = "ปิด Hitbox"
+        toggleButton.BorderColor3 = Color3.fromRGB(0, 255, 0)
+    end
+end)
+
+game:GetService('RunService').RenderStepped:Connect(function()
+    if not _G.Disabled then
+        for _, v in pairs(game:GetService('Players'):GetPlayers()) do
+            if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+                pcall(function()
+                    v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
+                    v.Character.HumanoidRootPart.Transparency = 0.7
+                    v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+                    v.Character.HumanoidRootPart.Material = Enum.Material.Neon
+                    v.Character.HumanoidRootPart.CanCollide = false
+                end)
+            end
+        end
+    end
+end)
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("กดวาป🔥","กดเพื่อวาป",function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/HK7kTmDL"))()
+end)
+--
+--newsec:Button("New Button",function() end)
+local tab1 = Window:Tab("สคริป2") 
+-- Window:Tab("Tab","สคริป2")
+local newsec = tab1:Section("สคริปทั่วไป 2")
+
+local button = newsec:Button("GOD🦸‍♂️","อมตะ",function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/EjrTrMwC"))()
+end)
+local button = newsec:Button("หายตัว👹","กดเพื่อหายตัว",function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/3Rnd9rHf"))()
+end)
+--newsec:Button("New Button",function() end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("ชักเว่า🪁","กดเพื่อชักเว่า",function()
+	loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("Fling🕊️","เตะคนกระเด็น",function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/TXMNj1yy"))()
+end)
+local button = newsec:Button("ยิงปืนรัว🔫","ไว้เรื้อนแมพทหาร",function()
+	https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Vehicle%20Fly%20Gui
+end)
+local button = newsec:Button("VFLY🚗","ใช้ได้ทุกแมพ",function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Vehicle%20Fly%20Gui'))()
+end)
+--newsec:Button("New Button",function() end)
+--newsec:Button("New Button",function() end)
+--newsec:Button("New Button",function() end)
+local tab1 = Window:Tab("ESP👥") 
+-- Window:Tab("Tab","Tab Title")
+local newsec = tab1:Section("ESP PLAYER/BOT🔥🔥")
+local button = newsec:Button("ESP PLAYER👥","esp คน",function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/ZkLhNuDL"))()
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("ESP BOT👾","esp bot",function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/q26QuUBF"))()
+end)
+--newsec:Button("New Button",function() end)
+local tab1 = Window:Tab("ADMINS⚡") 
+-- Window:Tab("Tab","Tab Title")
+local newsec = tab1:Section("ADMINS MENU🎁")
+local button = newsec:Button("Ghost Hub 👻","Ghost Hub Script",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub"))()
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("infinite Yeid⚫","CMDS ALL",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("Nameless Admins⚡","cmds",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))()
+end)
+--newsec:Button("New Button",function() end
+local tab1 = Window:Tab("แมพ🏠") 
+local newsec = tab1:Section("สคริปแมพ☃️")
+local button = newsec:Button("Blue Lock⚽","Ball Control",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL"))()
+end)
+--newsec:Button("Ninja Legend👺",function() end)
+local button = newsec:Button("Ninja Legend👺","Ninja",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/rndmq/Serverlist/refs/heads/main/Loader"))()
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("Auto Bond💰","Dead Rail🚂",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond"))()
+end)
+--newsec:Button("Dead Rail",function() end)
+local button = newsec:Button("Dead Rail🚂","🚂🚂",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ringtaa/deadrailsui.github.io/refs/heads/main/RINGTA.LUA"))()
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("Evade💨","💨💨💨",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua"))()
+end)
+--newsec:Button("New Button",function() end)
+local tab1 = Window:Tab("แมพ 2") 
+local newsec = tab1:Section("สคริปแมพ✨")
+local button = newsec:Button("Brookhaven🏠","เรื้อน",function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script"))()
+end)
+--newsec:Button("New Button",function() end)
+local button = newsec:Button("Brookhaven Music🎶🎵","Music",function()
+	loadstring(game:HttpGet("https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-3353"))()
+end)
+--
+local tab1 = Window:Tab("Tab") 
+local newsec = tab1:Section("TEST")
+local slider = newsec:Slider("Slider Title",16,100,function(value)
+	print(value)
+end)
+print(slider:GetValue())
+slider:SetValue(100)
+newsec:Line()
+newsec:ColorPicker("Color Picker Title",Color3.fromRGB(39, 39, 39),function(xd)
+	print(xd)
+end)
+newsec:KeyBind("Example Key Bind","Q",function()
+	Hawk:ToggleUI() --Toggle UI
+end)
+local toggleee = newsec:Toggle("Example Toggle",function(value)
+	if value == true then
+		print("Activated!")
+	elseif value == false then
+		print("Disabled!")
+	end
+end)
+newsec:TextBox("Example TextBox","write here",function(value)
+	print(value)
+end)
+local dropdown = newsec:Dropdown("Example Dropdown",{"Hanki"},function(xd)
+	if xd == "Xero" then
+		print("helo")
+	end
+end)
+newsec:Image("Spyro","Xero Hub",{
+	Name = "test", -- "Name of the file and the Title"
+	FileName = "Spyro.webm",
+	CheckFile = false,
+	ImageLink = "----", --webm links or rbxassetid ids only
+	ImageColor = Color3.fromRGB(255, 255, 255), --Image Color
+	Stroke = Color3.fromRGB(255, 255, 255), --Stroke Color
+	Volume = 1, --Volume if you set a video
+	Description = {"test","test"} --Description
 })
-
--- You can use the SaveManager:LoadAutoloadConfig() to load a config
--- which has been marked to be one that auto loads!
-SaveManager:LoadAutoloadConfig()
