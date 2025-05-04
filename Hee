@@ -41,294 +41,189 @@ do
         Title = "บิน✈️",
         Description = "กดเพื่อบิน",
         Callback = function()
-            https://pastebin.com/raw/qWT8nP8b
-            
+            https://pastebin.com/raw/qWT8nP8b    
         end
     })
-
-
-
     Tabs.Main:AddButton({
         Title = "กดวาป🔥️",
         Description = "กดเพื่อรับกดไอเทมวาป",
         Callback = function()
-            https://pastebin.com/raw/HK7kTmDL
-            
+            https://pastebin.com/raw/HK7kTmDL   
         end
     })
-    
-    
-    
     Tabs.Main:AddButton({
         Title = "ทะล🥷ุ️",
         Description = "ทะลุ",
         Callback = function()
-            https://pastebin.com/raw/SqNBCt6C
-            
+            https://pastebin.com/raw/SqNBCt6C  
         end
     })
-    
-    
-    
     Tabs.Main:AddButton({
         Title = "วิ่งเร็ว×4🏃️",
         Description = "วิ่งเร็วกว่าเดิม",
         Callback = function()
-            https://pastebin.com/raw/pZhkm5mD
-            
+            https://pastebin.com/raw/pZhkm5mD   
         end
     })
-    
-    
-    
     Tabs.Main:AddButton({
         Title = "ฆ่าบอท⚔️️",
         Description = "คิลบอท",
         Callback = function()
-            https://pastebin.com/raw/DczvQZyU
-            
+            https://pastebin.com/raw/DczvQZyU  
         end
     })    
-    
-    
-    
     Tabs.Main:AddButton({
         Title = "ล็อคหัว🎯️️",
         Description = "อิทบอท",
         Callback = function()
-            https://gist.githubusercontent.com/Aimboter477387/582af6aec49782899d5d375ab239039e/raw
-            
+            https://gist.githubusercontent.com/Aimboter477387/582af6aec49782899d5d375ab239039e/raw   
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "เสกของ🎁️️",
         Description = "กดเพื่อเสก",
         Callback = function()
-            https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gametoolgiver.lua
-            
+            https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gametoolgiver.lua   
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "บูสfps🔥️️",
         Description = "แรง",
         Callback = function()
-            https://raw.githubusercontent.com/XNEOFF/FPS-BOOSTER/main/FPSBooster.txt
-            
+            https://raw.githubusercontent.com/XNEOFF/FPS-BOOSTER/main/FPSBooster.txt      
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Hitbox 32%🎯️️",
         Description = "Hithox",
         Callback = function()
-            https://pastebin.com/raw/iRyTtfmf
-            
+            https://pastebin.com/raw/iRyTtfm
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "GOD️️",
         Description = "อมตะ",
         Callback = function()
-            https://pastebin.com/raw/EjrTrMwC
-            
+            https://pastebin.com/raw/EjrTrMwC   
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Keyboard⌨️️️",
         Description = "คีย์บอด",
         Callback = function()
-            https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt
-            
+            https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt  
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "หายตัว🫥️️",
         Description = "อมตะ",
         Callback = function()
-            https://pastebin.com/raw/3Rnd9rHf
-            
+            https://pastebin.com/raw/3Rnd9rHf  
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "infinite Yeid👺️️",
         Description = "Admins",
         Callback = function()
-            https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source
-            
+            https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source  
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Ghost Hub👻️️",
         Description = "Ghost",
         Callback = function()
-            https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub
-            
+            https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub  
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Admins Nameless🎩️️",
         Description = "admins2",
         Callback = function()
             https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source
-            
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "ชักเว่า🪁️️",
         Description = "หำ",
         Callback = function()
-            https://pastefy.app/wa3v2Vgm/raw
-            
+            https://pastefy.app/wa3v2Vgm/raw 
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Fling🪽️️",
         Description = "เตะ",
         Callback = function()
-            https://pastebin.com/raw/TXMNj1yy
-            
+            https://pastebin.com/raw/TXMNj1yy 
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "ESP PLAYER👥️️",
         Description = "ESP",
         Callback = function()
-            https://pastebin.com/raw/ZkLhNuDL
-            
+            https://pastebin.com/raw/ZkLhNuDL   
         end
-    })
-        
-    
-    
+    })  
     Tabs.Main:AddButton({
         Title = "ESP BOT,NPC👾🤖️️",
         Description = "",
         Callback = function()
-            https://pastebin.com/raw/q26QuUBF
-            
+            https://pastebin.com/raw/q26QuUBF   
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "BlueLock⚽️️",
         Description = "Map",
         Callback = function()
-            https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL
-            
+            https://raw.githubusercontent.com/RedJDark/CONTROL-SCRIPTT/refs/heads/main/CONTROL  
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Ninja Legend🥷️️",
         Description = "Map",
         Callback = function()
             https://raw.githubusercontent.com/rndmq/Serverlist/refs/heads/main/Loader
-            
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "AutoBond💸️️",
         Description = "DearRail🚄",
         Callback = function()
-            https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond
-            
+            https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/autobond 
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Dead Rail🚆️️",
         Description = "Map",
         Callback = function()
             https://raw.githubusercontent.com/ringtaa/deadrailsui.github.io/refs/heads/main/RINGTA.LUA
-            
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "STRONGEST PUNCH👊️️",
         Description = "Map",
         Callback = function()
             https://rawscripts.net/raw/STRONGEST-PUNCH-SIMULATOR-Automatic-farm-4508
-            
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Evade🏃️️",
         Description = "Map",
         Callback = function()
-            https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua
-            
+            https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/Files/Games/Evade/Overhaul.lua 
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Brookhaven🏘️️️",
         Description = "Map",
         Callback = function()
             https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script
-            
         end
     })
-        
-    
-    
     Tabs.Main:AddButton({
         Title = "Brookhaven Music🏡🎶️️",
-        Description = "https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-33531",
+        Description = "เปิดเพลงเรื้อนๆ",
         Callback = function()
-            
-            
+            https://rawscripts.net/raw/Brookhaven-RP-Audio-Player-Script-Brookhaven-RP-3353
         end
     })
     local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
