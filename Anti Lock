@@ -1,260 +1,383 @@
--- Xero Hub V0.4🩸 (Block Spin Helper)
+-- 🩸 Xero Hub V0.4 - รวม AntiLock, AntiDrop, SilentAim, AutoFire, Wallbang
 
--- ลบ GUI เก่า
-pcall(function() game.CoreGui:FindFirstChild("XeroHub"):Destroy() end)
+-- ลบ GUI เก่าถ้ามี
+pcall(function() game.CoreGui:FindFirstChild("XeroHub_GUI"):Destroy() end)
 
--- Services
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
-local Camera = workspace.CurrentCamera
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 local lp = Players.LocalPlayer
+local mouse = lp:GetMouse()
 
--- Globals
+-- RemoteEvent ชื่อยิงกระสุนในเกม (เปลี่ยนชื่อให้ตรงเกม)
+local shootEvent = ReplicatedStorage:WaitForChild("ShootEvent")
+
+-- ตัวแปรสถานะหลัก
 getgenv().AntiLockEnabled = false
+getgenv().AntiDropEnabled = false
 getgenv().SilentAimEnabled = false
-getgenv().ESPEnabled = true
-getgenv().FOVSize = 80
-getgenv().AntiDeathEnabled = false
+getgenv().AutoFireEnabled = false
+getgenv().WallbangEnabled = false
 
--- GUI
-local gui = Instance.new("ScreenGui", game.CoreGui)
-gui.Name = "XeroHub"
+-- ค่าคงที่ต่างๆ
+local headHeightOffset = Vector3.new(0, 1.5, 0)
+local jitterMagnitude = 0.03
+local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+local safePosition = Vector3.new(-1000, 500, -1000) -- ตำแหน่งปลอดภัยสำหรับวาปหนี
+
+local currentTween = nil
+
+-- ฟังก์ชันเคลื่อนที่หัวแบบนุ่มนวล (Anti-Lock)
+local function smoothMoveHead(head, targetPos)
+    if currentTween then
+        currentTween:Cancel()
+        currentTween = nil
+    end
+    local goal = {}
+    goal.CFrame = CFrame.new(targetPos) * (head.CFrame - head.CFrame.p)
+    currentTween = TweenService:Create(head, tweenInfo, goal)
+    currentTween:Play()
+end
+
+-- ฟังก์ชันกันตาย (Anti-Drop)
+local function preventDrop()
+    local char = lp.Character
+    if not char then return end
+    local hum = char:FindFirstChildOfClass("Humanoid")
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hum or not hrp then return end
+
+    hum:GetPropertyChangedSignal("Health"):Connect(function()
+        if getgenv().AntiDropEnabled and hum.Health > 0 and hum.Health < 20 then
+            -- วาปหนีไปตำแหน่งปลอดภัย
+            hrp.CFrame = CFrame.new(safePosition)
+            wait(0.3)
+            -- ฆ่าตัวตายโดยไม่ให้ของตก
+            hum.Health = 0
+        end
+    end)
+end
+
+-- ฟังก์ชันคำนวณว่าเป้าหมายอยู่ใน FOV หรือไม่ (Silent Aim)
+local function isInFOV(targetPos, fovRadius)
+    local camera = workspace.CurrentCamera
+    local screenPos, onScreen = camera:WorldToScreenPoint(targetPos)
+    if not onScreen then return false end
+    local mousePos = Vector2.new(mouse.X, mouse.Y)
+    local dist = (Vector2.new(screenPos.X, screenPos.Y) - mousePos).Magnitude
+    return dist <= fovRadius
+end
+
+-- ฟังก์ชัน Raycast ยิงทะลุ (Wallbang แบบ Hermanos)
+local maxDistance = 3000
+
+local function raycastWallbang(origin, direction, ignoreList)
+    local ignoreList = ignoreList or {}
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterDescendantsInstances = ignoreList
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+    raycastParams.IgnoreWater = true
+
+    local currentOrigin = origin
+    local totalDistance = 0
+    local maxPierce = 3 -- จำนวนชั้นทะลุได้
+    local hits = {}
+
+    for i = 1, maxPierce do
+        local rayResult = workspace:Raycast(currentOrigin, direction * (maxDistance - totalDistance), raycastParams)
+        if rayResult then
+            table.insert(hits, rayResult)
+            totalDistance = totalDistance + (rayResult.Position - currentOrigin).Magnitude
+            currentOrigin = rayResult.Position + direction.Unit * 0.1 -- เลื่อนข้ามชิ้นส่วน
+
+            table.insert(ignoreList, rayResult.Instance)
+            raycastParams.FilterDescendantsInstances = ignoreList
+        else
+            break
+        end
+    end
+    return hits
+end
+
+-- ฟังก์ชันยิงกระสุนจริง
+local function fireBullet(targetPos)
+    local char = lp.Character
+    if not char then return end
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    local origin = hrp.Position
+    local direction = (targetPos - origin).Unit * maxDistance
+
+    local ignoreList = {char}
+
+    local hits = {}
+    if getgenv().WallbangEnabled then
+        hits = raycastWallbang(origin, direction, ignoreList)
+    else
+        local raycastParams = RaycastParams.new()
+        raycastParams.FilterDescendantsInstances = ignoreList
+        raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+        raycastParams.IgnoreWater = true
+
+        local result = workspace:Raycast(origin, direction, raycastParams)
+        if result then
+            table.insert(hits, result)
+        end
+    end
+
+    -- ยิงใส่เป้าหมายทั้งหมดที่เจอ (ทะลุกำแพงได้ถ้าเปิด Wallbang)
+    for _, hit in ipairs(hits) do
+        local hitPos = hit.Position
+
+        -- เพิ่มดาเมจถ้าเปิด Silent Aim และเป้าหมายอยู่ใน FOV
+        if getgenv().SilentAimEnabled then
+            if isInFOV(hitPos, 150) then
+                -- ตัวอย่าง: เพิ่มดาเมจ (ขึ้นอยู่กับเกม ต้องแก้ที่เซิร์ฟเวอร์ด้วย)
+                -- สมมติส่ง flag เพิ่มดาเมจได้
+                shootEvent:FireServer(hitPos, true) -- true = เพิ่มดาเมจ
+            else
+                shootEvent:FireServer(hitPos, false)
+            end
+        else
+            shootEvent:FireServer(hitPos, false)
+        end
+    end
+end
+
+-- ตัวแปรยิงรัว
+local autoFireDelay = 0.1 -- ตั้งค่าความเร็วยิง (วินาที)
+local autoFireConnection = nil
+
+-- ฟังก์ชันเริ่มยิงรัว
+local function startAutoFire()
+    if autoFireConnection then return end
+    autoFireConnection = RunService.Heartbeat:Connect(function(dt)
+        if getgenv().AutoFireEnabled and lp.Character and mouse.Target then
+            fireBullet(mouse.Hit.p)
+            wait(autoFireDelay)
+        end
+    end)
+end
+
+-- ฟังก์ชันหยุดยิงรัว
+local function stopAutoFire()
+    if autoFireConnection then
+        autoFireConnection:Disconnect()
+        autoFireConnection = nil
+    end
+end
+
+-- เมื่อกดเมาส์ เริ่มยิงรัว (ถ้าเปิด AutoFire)
+mouse.Button1Down:Connect(function()
+    if getgenv().AutoFireEnabled then
+        startAutoFire()
+    end
+end)
+
+-- เมื่อปล่อยเมาส์ หยุดยิงรัว
+mouse.Button1Up:Connect(function()
+    stopAutoFire()
+end)
+
+-- สร้าง GUI
+local gui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+gui.Name = "XeroHub_GUI"
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 280, 0, 280)
-frame.Position = UDim2.new(0.02, 0, 0.3, 0)
-frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-frame.BorderSizePixel = 2
-frame.BorderColor3 = Color3.fromRGB(255, 0, 100)
+frame.Size = UDim2.new(0, 300, 0, 380)
+frame.Position = UDim2.new(0.02, 0, 0.2, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
-frame.BackgroundTransparency = 0.1
 
 local title = Instance.new("TextLabel", frame)
-title.Size = UDim2.new(1, 0, 0.15, 0)
-title.Text = "Xero Hub V0.5🩸"
-title.TextColor3 = Color3.fromRGB(255, 0, 100)
+title.Size = UDim2.new(1, 0, 0, 40)
+title.Text = "🩸 Xero Hub V0.4"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 22
 title.BackgroundTransparency = 1
 
-local function createToggleButton(text, posY, getStatusFunc, toggleFunc)
-local btn = Instance.new("TextButton", frame)
-btn.Size = UDim2.new(0.9, 0, 0.12, 0)
-btn.Position = UDim2.new(0.05, 0, posY, 0)
-btn.Font = Enum.Font.Gotham
-btn.TextSize = 17
-btn.AutoButtonColor = true
+-- Anti-Lock UI
+local antiLockTitle = Instance.new("TextLabel", frame)
+antiLockTitle.Position = UDim2.new(0, 0, 0, 40)
+antiLockTitle.Size = UDim2.new(1, 0, 0, 25)
+antiLockTitle.Text = "🛡 Anti-Lock: OFF"
+antiLockTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+antiLockTitle.Font = Enum.Font.GothamBold
+antiLockTitle.TextSize = 16
+antiLockTitle.BackgroundTransparency = 1
 
-local function updateButton()  
-	local status = getStatusFunc() and "ON" or "OFF"  
-	btn.Text = text .. ": " .. status  
-	btn.BackgroundColor3 = getStatusFunc() and Color3.fromRGB(60, 180, 75) or Color3.fromRGB(70, 130, 180)  
-	btn.TextColor3 = Color3.fromRGB(255, 255, 255)  
-end  
+local toggleAntiLock = Instance.new("TextButton", frame)
+toggleAntiLock.Position = UDim2.new(0.05, 0, 0, 65)
+toggleAntiLock.Size = UDim2.new(0.9, 0, 0, 30)
+toggleAntiLock.Text = "🔘 Toggle Anti-Lock"
+toggleAntiLock.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+toggleAntiLock.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleAntiLock.Font = Enum.Font.Gotham
+toggleAntiLock.TextSize = 14
 
-btn.MouseButton1Click:Connect(function()  
-	toggleFunc()  
-	updateButton()  
-end)  
+-- Anti-Drop UI
+local antiDropTitle = Instance.new("TextLabel", frame)
+antiDropTitle.Position = UDim2.new(0, 0, 0, 100)
+antiDropTitle.Size = UDim2.new(1, 0, 0, 25)
+antiDropTitle.Text = "🧳 Anti-Drop: OFF"
+antiDropTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+antiDropTitle.Font = Enum.Font.GothamBold
+antiDropTitle.TextSize = 16
+antiDropTitle.BackgroundTransparency = 1
 
-updateButton()  
-return btn
+local toggleAntiDrop = Instance.new("TextButton", frame)
+toggleAntiDrop.Position = UDim2.new(0.05, 0, 0, 125)
+toggleAntiDrop.Size = UDim2.new(0.9, 0, 0, 30)
+toggleAntiDrop.Text = "🔘 Toggle Anti-Drop"
+toggleAntiDrop.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+toggleAntiDrop.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleAntiDrop.Font = Enum.Font.Gotham
+toggleAntiDrop.TextSize = 14
 
-end
+-- Silent Aim UI
+local silentAimTitle = Instance.new("TextLabel", frame)
+silentAimTitle.Position = UDim2.new(0, 0, 0, 160)
+silentAimTitle.Size = UDim2.new(1, 0, 0, 25)
+silentAimTitle.Text = "🎯 Silent Aim: OFF"
+silentAimTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+silentAimTitle.Font = Enum.Font.GothamBold
+silentAimTitle.TextSize = 16
+silentAimTitle.BackgroundTransparency = 1
 
--- ปุ่มเปิด/ปิดฟีเจอร์พร้อมสถานะ
-local btnAntiLock = createToggleButton(
-"🛡 Anti-Lock",
-function() return getgenv().AntiLockEnabled end,
-function() getgenv().AntiLockEnabled = not getgenv().AntiLockEnabled end
-)
+local toggleSilentAim = Instance.new("TextButton", frame)
+toggleSilentAim.Position = UDim2.new(0.05, 0, 0, 185)
+toggleSilentAim.Size = UDim2.new(0.9, 0, 0, 30)
+toggleSilentAim.Text = "🔘 Toggle Silent Aim"
+toggleSilentAim.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+toggleSilentAim.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleSilentAim.Font = Enum.Font.Gotham
+toggleSilentAim.TextSize = 14
 
-local btnSilentAim = createToggleButton(
-"🎯 Silent Aim",
-function() return getgenv().SilentAimEnabled end,
-function() getgenv().SilentAimEnabled = not getgenv().SilentAimEnabled end
-)
+-- Auto Fire UI
+local autoFireTitle = Instance.new("TextLabel", frame)
+autoFireTitle.Position = UDim2.new(0, 0, 0, 220)
+autoFireTitle.Size = UDim2.new(1, 0, 0, 25)
+autoFireTitle.Text = "🔥 Auto Fire: OFF"
+autoFireTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoFireTitle.Font = Enum.Font.GothamBold
+autoFireTitle.TextSize = 16
+autoFireTitle.BackgroundTransparency = 1
 
-local btnESP = createToggleButton(
-"👁 ESP",
-function() return getgenv().ESPEnabled end,
-function() getgenv().ESPEnabled = not getgenv().ESPEnabled end
-)
+local toggleAutoFire = Instance.new("TextButton", frame)
+toggleAutoFire.Position = UDim2.new(0.05, 0, 0, 245)
+toggleAutoFire.Size = UDim2.new(0.9, 0, 0, 30)
+toggleAutoFire.Text = "🔘 Toggle Auto Fire"
+toggleAutoFire.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+toggleAutoFire.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleAutoFire.Font = Enum.Font.Gotham
+toggleAutoFire.TextSize = 14
 
-local btnAntiDeath = createToggleButton(
-"🛡 Anti Death",
-function() return getgenv().AntiDeathEnabled end,
-function() getgenv().AntiDeathEnabled = not getgenv().AntiDeathEnabled end
-)
+-- Auto Fire Speed Slider
+local speedLabel = Instance.new("TextLabel", frame)
+speedLabel.Position = UDim2.new(0.05, 0, 0, 280)
+speedLabel.Size = UDim2.new(0.9, 0, 0, 25)
+speedLabel.Text = "⏱️ Fire Speed: 0.1 s"
+speedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+speedLabel.Font = Enum.Font.Gotham
+speedLabel.TextSize = 14
+speedLabel.BackgroundTransparency = 1
 
--- ปุ่มเพิ่ม/ลดขนาด FOV (แยกจาก toggle)
-local btnFOVUp = Instance.new("TextButton", frame)
-btnFOVUp.Size = UDim2.new(0.42, 0, 0.12, 0)
-btnFOVUp.Position = UDim2.new(0.05, 0, 0.72, 0)
-btnFOVUp.Text = "➕ Increase FOV"
-btnFOVUp.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
-btnFOVUp.TextColor3 = Color3.fromRGB(255, 255, 255)
-btnFOVUp.Font = Enum.Font.Gotham
-btnFOVUp.TextSize = 17
-btnFOVUp.AutoButtonColor = true
-btnFOVUp.MouseButton1Click:Connect(function()
-getgenv().FOVSize = math.clamp(getgenv().FOVSize + 10, 10, 500)
+local speedSlider = Instance.new("TextBox", frame)
+speedSlider.Position = UDim2.new(0.05, 0, 0, 310)
+speedSlider.Size = UDim2.new(0.9, 0, 0, 25)
+speedSlider.Text = tostring(autoFireDelay)
+speedSlider.ClearTextOnFocus = false
+speedSlider.TextColor3 = Color3.fromRGB(0, 0, 0)
+speedSlider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+speedSlider.Font = Enum.Font.Gotham
+speedSlider.TextSize = 14
+
+speedSlider.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local val = tonumber(speedSlider.Text)
+        if val and val >= 0.01 and val <= 1 then
+            autoFireDelay = val
+            speedLabel.Text = "⏱️ Fire Speed: ".. tostring(autoFireDelay) .. " s"
+        else
+            speedSlider.Text = tostring(autoFireDelay)
+        end
+    end
 end)
 
-local btnFOVDown = Instance.new("TextButton", frame)
-btnFOVDown.Size = UDim2.new(0.42, 0, 0.12, 0)
-btnFOVDown.Position = UDim2.new(0.53, 0, 0.72, 0)
-btnFOVDown.Text = "➖ Decrease FOV"
-btnFOVDown.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
-btnFOVDown.TextColor3 = Color3.fromRGB(255, 255, 255)
-btnFOVDown.Font = Enum.Font.Gotham
-btnFOVDown.TextSize = 17
-btnFOVDown.AutoButtonColor = true
-btnFOVDown.MouseButton1Click:Connect(function()
-getgenv().FOVSize = math.clamp(getgenv().FOVSize - 10, 10, 500)
+-- Wallbang UI
+local wallbangTitle = Instance.new("TextLabel", frame)
+wallbangTitle.Position = UDim2.new(0, 0, 0, 345)
+wallbangTitle.Size = UDim2.new(1, 0, 0, 25)
+wallbangTitle.Text = "💥 Wallbang: OFF"
+wallbangTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+wallbangTitle.Font = Enum.Font.GothamBold
+wallbangTitle.TextSize = 16
+wallbangTitle.BackgroundTransparency = 1
+
+local toggleWallbang = Instance.new("TextButton", frame)
+toggleWallbang.Position = UDim2.new(0.05, 0, 0, 370)
+toggleWallbang.Size = UDim2.new(0.9, 0, 0, 30)
+toggleWallbang.Text = "🔘 Toggle Wallbang"
+toggleWallbang.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+toggleWallbang.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleWallbang.Font = Enum.Font.Gotham
+toggleWallbang.TextSize = 14
+
+-- ปุ่ม Toggle Event
+
+toggleAntiLock.MouseButton1Click:Connect(function()
+    getgenv().AntiLockEnabled = not getgenv().AntiLockEnabled
+    if getgenv().AntiLockEnabled then
+        antiLockTitle.Text = "🛡 Anti-Lock: ON"
+        toggleAntiLock.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
+    else
+        antiLockTitle.Text = "🛡 Anti-Lock: OFF"
+        toggleAntiLock.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+    end
 end)
 
--- Anti Lock Head Smooth Movement
-local headOffset = Vector3.new(0, 1.5, 0)
-RunService.RenderStepped:Connect(function()
-if getgenv().AntiLockEnabled and lp.Character then
-local head = lp.Character:FindFirstChild("Head")
-local root = lp.Character:FindFirstChild("HumanoidRootPart")
-if head and root then
-local jitterX = math.sin(tick() * 5) * 0.05
-local jitterZ = math.cos(tick() * 5) * 0.05
-local goal = {}
-goal.CFrame = CFrame.new(root.Position + headOffset + Vector3.new(jitterX, 0, jitterZ)) * (head.CFrame - head.Position)
-local tween = TweenService:Create(head, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), goal)
-tween:Play()
-end
-end
+toggleAntiDrop.MouseButton1Click:Connect(function()
+    getgenv().AntiDropEnabled = not getgenv().AntiDropEnabled
+    if getgenv().AntiDropEnabled then
+        antiDropTitle.Text = "🧳 Anti-Drop: ON"
+        toggleAntiDrop.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
+        if lp.Character then preventDrop() end
+        lp.CharacterAdded:Connect(function()
+            wait(1)
+            if getgenv().AntiDropEnabled then
+                preventDrop()
+            end
+        end)
+    else
+        antiDropTitle.Text = "🧳 Anti-Drop: OFF"
+        toggleAntiDrop.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+    end
 end)
 
--- ESP + Show Weapon Name
-local ESPBoxes = {}
-local function createESP(player)
-local box = Drawing.new("Text")
-box.Size = 14
-box.Color = Color3.new(1, 1, 1)
-box.Center = true
-box.Outline = true
-box.Visible = false
-
-RunService.RenderStepped:Connect(function()  
-	if not getgenv().ESPEnabled then  
-		box.Visible = false  
-		return  
-	end  
-	local char = player.Character  
-	if char and char:FindFirstChild("HumanoidRootPart") then  
-		local pos, onScreen = Camera:WorldToViewportPoint(char.HumanoidRootPart.Position)  
-		if onScreen then  
-			local tool = char:FindFirstChildWhichIsA("Tool")  
-			box.Text = player.Name .. (tool and (" [" .. tool.Name .. "]") or "")  
-			box.Position = Vector2.new(pos.X, pos.Y - 30)  
-			box.Visible = true  
-		else  
-			box.Visible = false  
-		end  
-	else  
-		box.Visible = false  
-	end  
-end)  
-  
-return box
-
-end
-
-for _, p in pairs(Players:GetPlayers()) do
-if p ~= lp then
-ESPBoxes[p] = createESP(p)
-end
-end
-Players.PlayerAdded:Connect(function(p)
-if p ~= lp then
-ESPBoxes[p] = createESP(p)
-end
-end)
-Players.PlayerRemoving:Connect(function(p)
-if ESPBoxes[p] then
-ESPBoxes[p]:Remove()
-ESPBoxes[p] = nil
-end
+toggleSilentAim.MouseButton1Click:Connect(function()
+    getgenv().SilentAimEnabled = not getgenv().SilentAimEnabled
+    if getgenv().SilentAimEnabled then
+        silentAimTitle.Text = "🎯 Silent Aim: ON"
+        toggleSilentAim.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
+    else
+        silentAimTitle.Text = "🎯 Silent Aim: OFF"
+        toggleSilentAim.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+    end
 end)
 
--- FOV Circle for Silent Aim
-local fovCircle = Drawing.new("Circle")
-fovCircle.Radius = getgenv().FOVSize
-fovCircle.Color = Color3.fromRGB(255, 0, 0)
-fovCircle.Thickness = 1
-fovCircle.Filled = false
-fovCircle.Visible = false
-
-RunService.RenderStepped:Connect(function()
-fovCircle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
-fovCircle.Radius = getgenv().FOVSize
-fovCircle.Visible = getgenv().SilentAimEnabled
-end)
-
--- Silent Aim Implementation (Basic Raycast to closest player in FOV)
-local function getClosestTarget()
-local closestPlayer = nil
-local shortestDistance = math.huge
-for _, player in pairs(Players:GetPlayers()) do
-if player ~= lp and player.Character and player.Character:FindFirstChild("Head") and player.Character:FindFirstChild("HumanoidRootPart") then
-local headPos, onScreen = Camera:WorldToViewportPoint(player.Character.Head.Position)
-if onScreen then
-local mousePos = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
-local dist = (Vector2.new(headPos.X, headPos.Y) - mousePos).Magnitude
-if dist < getgenv().FOVSize and dist < shortestDistance then
-closestPlayer = player
-shortestDistance = dist
-end
-end
-end
-end
-return closestPlayer
-end
-
--- Hook Mouse Hit for Silent Aim (example using metatable hook)
-local mt = getrawmetatable(game)
-local oldNamecall = mt.__namecall
-
-setreadonly(mt, false)
-
-mt.__namecall = newcclosure(function(self, ...)
-local method = getnamecallmethod()
-if method == "FireServer" and tostring(self) == "ShootEvent" then
-if getgenv().SilentAimEnabled then
-local args = {...}
-local target = getClosestTarget()
-if target and target.Character and target.Character:FindFirstChild("Head") then
-args[1] = target.Character.Head.Position
-return oldNamecall(self, unpack(args))
-end
-end
-end
-return oldNamecall(self, ...)
-end)
-
-setreadonly(mt, true)
-
--- Anti Death Drop (ของไม่ตกเมื่อโดนยิงตาย)
-RunService.Heartbeat:Connect(function()
-if getgenv().AntiDeathEnabled and lp.Character then
-local humanoid = lp.Character:FindFirstChildWhichIsA("Humanoid")
-if humanoid and humanoid.Health <= 0 then
-local root = lp.Character:FindFirstChild("HumanoidRootPart")
-if root then
--- วาร์ปไปจุดปลอดภัยสูงๆ (เช่น Y=1000)
-root.CFrame = CFrame.new(root.Position.X, 1000, root.Position.Z)
-end
--- กดตายเองทันที
-humanoid.Health = 0
-end
-end
-end)
-
+toggleAutoFire.MouseButton1Click:Connect(function()
+    getgenv().AutoFireEnabled = not getgenv().AutoFireEnabled
+    if getgenv().AutoFireEnabled then
+        autoFireTitle.Text = "🔥 Auto Fire: ON"
+        toggleAutoFire.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
+        startAutoFire()
+    else
+        autoFireTitle.Text = "🔥 Auto Fire: OFF"
+        toggleAutoFire.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
