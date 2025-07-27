@@ -1,0 +1,260 @@
+-- Xero Hub V0.4🩸 (Block Spin Helper)
+
+-- ลบ GUI เก่า
+pcall(function() game.CoreGui:FindFirstChild("XeroHub"):Destroy() end)
+
+-- Services
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local Camera = workspace.CurrentCamera
+local lp = Players.LocalPlayer
+
+-- Globals
+getgenv().AntiLockEnabled = false
+getgenv().SilentAimEnabled = false
+getgenv().ESPEnabled = true
+getgenv().FOVSize = 80
+getgenv().AntiDeathEnabled = false
+
+-- GUI
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "XeroHub"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 280, 0, 280)
+frame.Position = UDim2.new(0.02, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+frame.BorderSizePixel = 2
+frame.BorderColor3 = Color3.fromRGB(255, 0, 100)
+frame.Active = true
+frame.Draggable = true
+frame.BackgroundTransparency = 0.1
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0.15, 0)
+title.Text = "Xero Hub V0.5🩸"
+title.TextColor3 = Color3.fromRGB(255, 0, 100)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 22
+title.BackgroundTransparency = 1
+
+local function createToggleButton(text, posY, getStatusFunc, toggleFunc)
+local btn = Instance.new("TextButton", frame)
+btn.Size = UDim2.new(0.9, 0, 0.12, 0)
+btn.Position = UDim2.new(0.05, 0, posY, 0)
+btn.Font = Enum.Font.Gotham
+btn.TextSize = 17
+btn.AutoButtonColor = true
+
+local function updateButton()  
+	local status = getStatusFunc() and "ON" or "OFF"  
+	btn.Text = text .. ": " .. status  
+	btn.BackgroundColor3 = getStatusFunc() and Color3.fromRGB(60, 180, 75) or Color3.fromRGB(70, 130, 180)  
+	btn.TextColor3 = Color3.fromRGB(255, 255, 255)  
+end  
+
+btn.MouseButton1Click:Connect(function()  
+	toggleFunc()  
+	updateButton()  
+end)  
+
+updateButton()  
+return btn
+
+end
+
+-- ปุ่มเปิด/ปิดฟีเจอร์พร้อมสถานะ
+local btnAntiLock = createToggleButton(
+"🛡 Anti-Lock",
+function() return getgenv().AntiLockEnabled end,
+function() getgenv().AntiLockEnabled = not getgenv().AntiLockEnabled end
+)
+
+local btnSilentAim = createToggleButton(
+"🎯 Silent Aim",
+function() return getgenv().SilentAimEnabled end,
+function() getgenv().SilentAimEnabled = not getgenv().SilentAimEnabled end
+)
+
+local btnESP = createToggleButton(
+"👁 ESP",
+function() return getgenv().ESPEnabled end,
+function() getgenv().ESPEnabled = not getgenv().ESPEnabled end
+)
+
+local btnAntiDeath = createToggleButton(
+"🛡 Anti Death",
+function() return getgenv().AntiDeathEnabled end,
+function() getgenv().AntiDeathEnabled = not getgenv().AntiDeathEnabled end
+)
+
+-- ปุ่มเพิ่ม/ลดขนาด FOV (แยกจาก toggle)
+local btnFOVUp = Instance.new("TextButton", frame)
+btnFOVUp.Size = UDim2.new(0.42, 0, 0.12, 0)
+btnFOVUp.Position = UDim2.new(0.05, 0, 0.72, 0)
+btnFOVUp.Text = "➕ Increase FOV"
+btnFOVUp.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+btnFOVUp.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnFOVUp.Font = Enum.Font.Gotham
+btnFOVUp.TextSize = 17
+btnFOVUp.AutoButtonColor = true
+btnFOVUp.MouseButton1Click:Connect(function()
+getgenv().FOVSize = math.clamp(getgenv().FOVSize + 10, 10, 500)
+end)
+
+local btnFOVDown = Instance.new("TextButton", frame)
+btnFOVDown.Size = UDim2.new(0.42, 0, 0.12, 0)
+btnFOVDown.Position = UDim2.new(0.53, 0, 0.72, 0)
+btnFOVDown.Text = "➖ Decrease FOV"
+btnFOVDown.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+btnFOVDown.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnFOVDown.Font = Enum.Font.Gotham
+btnFOVDown.TextSize = 17
+btnFOVDown.AutoButtonColor = true
+btnFOVDown.MouseButton1Click:Connect(function()
+getgenv().FOVSize = math.clamp(getgenv().FOVSize - 10, 10, 500)
+end)
+
+-- Anti Lock Head Smooth Movement
+local headOffset = Vector3.new(0, 1.5, 0)
+RunService.RenderStepped:Connect(function()
+if getgenv().AntiLockEnabled and lp.Character then
+local head = lp.Character:FindFirstChild("Head")
+local root = lp.Character:FindFirstChild("HumanoidRootPart")
+if head and root then
+local jitterX = math.sin(tick() * 5) * 0.05
+local jitterZ = math.cos(tick() * 5) * 0.05
+local goal = {}
+goal.CFrame = CFrame.new(root.Position + headOffset + Vector3.new(jitterX, 0, jitterZ)) * (head.CFrame - head.Position)
+local tween = TweenService:Create(head, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), goal)
+tween:Play()
+end
+end
+end)
+
+-- ESP + Show Weapon Name
+local ESPBoxes = {}
+local function createESP(player)
+local box = Drawing.new("Text")
+box.Size = 14
+box.Color = Color3.new(1, 1, 1)
+box.Center = true
+box.Outline = true
+box.Visible = false
+
+RunService.RenderStepped:Connect(function()  
+	if not getgenv().ESPEnabled then  
+		box.Visible = false  
+		return  
+	end  
+	local char = player.Character  
+	if char and char:FindFirstChild("HumanoidRootPart") then  
+		local pos, onScreen = Camera:WorldToViewportPoint(char.HumanoidRootPart.Position)  
+		if onScreen then  
+			local tool = char:FindFirstChildWhichIsA("Tool")  
+			box.Text = player.Name .. (tool and (" [" .. tool.Name .. "]") or "")  
+			box.Position = Vector2.new(pos.X, pos.Y - 30)  
+			box.Visible = true  
+		else  
+			box.Visible = false  
+		end  
+	else  
+		box.Visible = false  
+	end  
+end)  
+  
+return box
+
+end
+
+for _, p in pairs(Players:GetPlayers()) do
+if p ~= lp then
+ESPBoxes[p] = createESP(p)
+end
+end
+Players.PlayerAdded:Connect(function(p)
+if p ~= lp then
+ESPBoxes[p] = createESP(p)
+end
+end)
+Players.PlayerRemoving:Connect(function(p)
+if ESPBoxes[p] then
+ESPBoxes[p]:Remove()
+ESPBoxes[p] = nil
+end
+end)
+
+-- FOV Circle for Silent Aim
+local fovCircle = Drawing.new("Circle")
+fovCircle.Radius = getgenv().FOVSize
+fovCircle.Color = Color3.fromRGB(255, 0, 0)
+fovCircle.Thickness = 1
+fovCircle.Filled = false
+fovCircle.Visible = false
+
+RunService.RenderStepped:Connect(function()
+fovCircle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+fovCircle.Radius = getgenv().FOVSize
+fovCircle.Visible = getgenv().SilentAimEnabled
+end)
+
+-- Silent Aim Implementation (Basic Raycast to closest player in FOV)
+local function getClosestTarget()
+local closestPlayer = nil
+local shortestDistance = math.huge
+for _, player in pairs(Players:GetPlayers()) do
+if player ~= lp and player.Character and player.Character:FindFirstChild("Head") and player.Character:FindFirstChild("HumanoidRootPart") then
+local headPos, onScreen = Camera:WorldToViewportPoint(player.Character.Head.Position)
+if onScreen then
+local mousePos = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+local dist = (Vector2.new(headPos.X, headPos.Y) - mousePos).Magnitude
+if dist < getgenv().FOVSize and dist < shortestDistance then
+closestPlayer = player
+shortestDistance = dist
+end
+end
+end
+end
+return closestPlayer
+end
+
+-- Hook Mouse Hit for Silent Aim (example using metatable hook)
+local mt = getrawmetatable(game)
+local oldNamecall = mt.__namecall
+
+setreadonly(mt, false)
+
+mt.__namecall = newcclosure(function(self, ...)
+local method = getnamecallmethod()
+if method == "FireServer" and tostring(self) == "ShootEvent" then
+if getgenv().SilentAimEnabled then
+local args = {...}
+local target = getClosestTarget()
+if target and target.Character and target.Character:FindFirstChild("Head") then
+args[1] = target.Character.Head.Position
+return oldNamecall(self, unpack(args))
+end
+end
+end
+return oldNamecall(self, ...)
+end)
+
+setreadonly(mt, true)
+
+-- Anti Death Drop (ของไม่ตกเมื่อโดนยิงตาย)
+RunService.Heartbeat:Connect(function()
+if getgenv().AntiDeathEnabled and lp.Character then
+local humanoid = lp.Character:FindFirstChildWhichIsA("Humanoid")
+if humanoid and humanoid.Health <= 0 then
+local root = lp.Character:FindFirstChild("HumanoidRootPart")
+if root then
+-- วาร์ปไปจุดปลอดภัยสูงๆ (เช่น Y=1000)
+root.CFrame = CFrame.new(root.Position.X, 1000, root.Position.Z)
+end
+-- กดตายเองทันที
+humanoid.Health = 0
+end
+end
+end)
+
